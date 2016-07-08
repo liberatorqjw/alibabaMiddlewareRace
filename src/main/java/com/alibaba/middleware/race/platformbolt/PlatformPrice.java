@@ -23,6 +23,8 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by qinjiawei on 16-7-8.
@@ -31,6 +33,8 @@ public class PlatformPrice implements IRichBolt {
 
     private static final Logger log = LoggerFactory.getLogger(PlatformPrice.class);
     private OutputCollector collector;
+    private Lock lockcount;
+    private Lock lockTmall;
 
     //private ConcurrentHashMap<Long, OrderMap> OrderDataMap;
 
@@ -42,6 +46,9 @@ public class PlatformPrice implements IRichBolt {
     public void prepare(Map stormConf, TopologyContext context, OutputCollector collector) {
 
         this.collector        = collector;
+        this.lockcount = new ReentrantLock();
+        this.lockTmall = new ReentrantLock();
+
         //this.OrderDataMap     = new ConcurrentHashMap<Long, OrderMap>();
         //this.PayAllData       = new LinkedBlockingQueue<PayData>();
         //this.TaobaoStorgeMap  = new ConcurrentHashMap<Long, TimePrice>();
@@ -100,9 +107,18 @@ public class PlatformPrice implements IRichBolt {
 
                     }
                     else {
-                        TimePrice timePrice = new TimePrice(payData.getCurprice());
+                        lockcount.lock();
+                        if (PlatformData.TaobaoStorgeMap.containsKey(payData.getCreateTime()))
+                        {
+                            PlatformData.TaobaoStorgeMap.get(payData.getCreateTime()).incrPrice(payData.getCurprice());
 
-                        PlatformData.TaobaoStorgeMap.put(payData.getCreateTime(), timePrice);
+                        }
+                        else {
+                            TimePrice timePrice = new TimePrice(payData.getCurprice());
+
+                            PlatformData.TaobaoStorgeMap.put(payData.getCreateTime(), timePrice);
+                        }
+                        lockcount.unlock();
                     }
                 }
                 else if(PlatformData.OrderDataMap.get(payData.getOrderid()).getPlatform().equals(RaceConfig.MqTmallTradeTopic))
@@ -113,9 +129,17 @@ public class PlatformPrice implements IRichBolt {
                     }
                     else
                     {
-                        TimePrice timePrice = new TimePrice(payData.getCurprice());
+                        lockTmall.lock();
+                        if (PlatformData.TmallStorgeMap.containsKey(payData.getCreateTime()))
+                        {
+                            PlatformData.TmallStorgeMap.get(payData.getCreateTime()).incrPrice(payData.getCurprice());
+                        }
+                        else {
+                            TimePrice timePrice = new TimePrice(payData.getCurprice());
 
-                        PlatformData.TmallStorgeMap.put(payData.getCreateTime(), timePrice);
+                            PlatformData.TmallStorgeMap.put(payData.getCreateTime(), timePrice);
+                        }
+                        lockTmall.unlock();
                     }
                 }
             }
@@ -125,7 +149,8 @@ public class PlatformPrice implements IRichBolt {
         {
             OrderMessage orderMessage = (OrderMessage) message;
             OrderMap orderMap = new OrderMap(orderMessage.getTotalPrice(), RaceConfig.MqTaobaoTradeTopic);
-            PlatformData.OrderDataMap.put(orderMessage.getOrderId(), orderMap);
+            if (!PlatformData.OrderDataMap.containsKey(orderMessage.getOrderId()))
+                PlatformData.OrderDataMap.put(orderMessage.getOrderId(), orderMap);
 
 
         }
@@ -133,7 +158,8 @@ public class PlatformPrice implements IRichBolt {
         {
             OrderMessage orderMessage = (OrderMessage) message;
             OrderMap orderMap = new OrderMap(orderMessage.getTotalPrice(), RaceConfig.MqTmallTradeTopic);
-            PlatformData.OrderDataMap.put(orderMessage.getOrderId(), orderMap);
+            if (!PlatformData.OrderDataMap.containsKey(orderMessage.getOrderId()))
+                PlatformData.OrderDataMap.put(orderMessage.getOrderId(), orderMap);
 
         }
     }

@@ -39,6 +39,8 @@ public class SaveRationResult extends TimerTask {
 
         double PCTotoal = 0.0;
         double WirlessTotal = 0.0;
+        //Tair 存储
+        TairOperatorImpl tairOperator = new TairOperatorImpl(RaceConfig.TairConfigServer, RaceConfig.TairSalveConfigServer, RaceConfig.TairGroup, RaceConfig.TairNamespace);
 
 
         while (iterator.hasNext())
@@ -54,9 +56,10 @@ public class SaveRationResult extends TimerTask {
 
             double curRatio = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue(); //保留两位小数
 
-            //Tair 存储
-            TairOperatorImpl tairOperator = new TairOperatorImpl(RaceConfig.TairConfigServer, RaceConfig.TairSalveConfigServer, RaceConfig.TairGroup, RaceConfig.TairNamespace);
+            double tairprice =(Double) tairOperator.get(RaceConfig.prex_ratio + createTime);
 
+            if (Math.abs(curRatio - tairprice) < 0.05)
+                continue;
             //double oldPrice =(Double) tairOperator.get(RaceConfig.prex_ratio + curtime);
             //if (new BigDecimal(curRatio).compareTo(new BigDecimal(oldPrice)) ==0)
             //    continue;

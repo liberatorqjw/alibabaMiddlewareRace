@@ -17,6 +17,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by qinjiawei on 16-7-8.
@@ -24,12 +26,14 @@ import java.util.concurrent.TimeUnit;
 public class RationBolt implements IRichBolt {
 
     private OutputCollector collector;
-
+    private Lock lockration;
     //private ConcurrentHashMap<Long, RationPrice> RationPriceMap;
 
     @Override
     public void prepare(Map stormConf, TopologyContext context, OutputCollector collector) {
         this.collector = collector;
+        this.lockration = new ReentrantLock();
+
         //this.RationPriceMap = new ConcurrentHashMap<Long, RationPrice>();
 
         //开启一个监控线程来查看消息是不是全部到达
@@ -71,17 +75,27 @@ public class RationBolt implements IRichBolt {
         //还未存在的整分时间
         else
         {
-            if (message.getPayPlatform() == pc)
+            lockration.lock();
+            if (RationData.RationPriceMap.containsKey(createTime))
             {
-                RationPrice rationPrice = new RationPrice(message.getPayAmount(), 0.0);
-                RationData.RationPriceMap.put(createTime, rationPrice);
+                if (message.getPayPlatform() == pc)
+                    RationData.RationPriceMap.get(createTime).incrPc(message.getPayAmount());
+                else
+                {
+                    RationData.RationPriceMap.get(createTime).incrWireless(message.getPayAmount());
+                }
             }
-            else
-            {
+            else {
+                if (message.getPayPlatform() == pc) {
+                    RationPrice rationPrice = new RationPrice(message.getPayAmount(), 0.0);
+                    RationData.RationPriceMap.put(createTime, rationPrice);
+                } else {
 
-                RationPrice rationPrice = new RationPrice(0.0,message.getPayAmount());
-                RationData.RationPriceMap.put(createTime, rationPrice);
+                    RationPrice rationPrice = new RationPrice(0.0, message.getPayAmount());
+                    RationData.RationPriceMap.put(createTime, rationPrice);
+                }
             }
+            lockration.unlock();
         }
 
 

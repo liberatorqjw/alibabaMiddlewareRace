@@ -18,7 +18,7 @@ import java.util.Map;
 public class ConsumerConf {
 
     private static Logger log = LoggerFactory.getLogger(ConsumerConf.class);
-
+    private static final long           serialVersionUID = 4641537253577312163L;
     public static Map<String, DefaultMQPushConsumer> consumers = new HashMap<String, DefaultMQPushConsumer>();
 
     public static synchronized DefaultMQPushConsumer mkInstance(MessageListenerConcurrently listener) throws MQClientException {
@@ -28,6 +28,7 @@ public class ConsumerConf {
         //log.info("start to init consumer client, configuration: ", JSON.toJSONString(config));
 
         DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(RaceConfig.MetaConsumerGroup);
+        // MetaPushConsumer consumer = new MetaPushConsumer(RaceConfig.MetaConsumerGroup);
         String nameServer = RaceConfig.MqNameServ;
         //consumer.setNamesrvAddr(nameServer);
 
@@ -38,6 +39,13 @@ public class ConsumerConf {
         consumer.subscribe(RaceConfig.MqPayTopic, tags);
 
         consumer.registerMessageListener(listener);
+
+        //consumer.setPullThresholdForQueue(config.getQueueSize());
+        //consumer.setConsumeMessageBatchMaxSize(config.getSendBatchSize());
+//        consumer.setPullBatchSize(config.getPullBatchSize());
+//        consumer.setPullInterval(config.getPullInterval());
+//        consumer.setConsumeThreadMin(config.getPullThreadNum());
+//        consumer.setConsumeThreadMax(config.getPullThreadNum());
 
         consumer.start();
 
