@@ -1,4 +1,5 @@
-package com.tqmall.iserver.rocket;
+
+package com.alibaba.middleware.race.spout;
 
 import backtype.storm.spout.SpoutOutputCollector;
 import backtype.storm.task.TopologyContext;
@@ -31,18 +32,18 @@ import java.util.Map;
 /**
  * Created by harlenzhang on 16/6/3.
  */
-public class ConsumerSpout implements IRichSpout, MessageListenerConcurrently{
+public class defaultConsumerSpout implements IRichSpout, MessageListenerConcurrently{
 
     private Map conf;
     private String id;
     private SpoutOutputCollector collector;
     private transient DefaultMQPushConsumer consumer;
 
-    private static Logger log = LoggerFactory.getLogger("spout.log");
+    private static Logger log = LoggerFactory.getLogger(defaultConsumerSpout.class);
 
 
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
-        declarer.declare(new Fields("MessageTuple"));
+        declarer.declare(new Fields("topic", "message"));
 
     }
 
@@ -59,13 +60,13 @@ public class ConsumerSpout implements IRichSpout, MessageListenerConcurrently{
         try {
             consumer = ConsumerConf.mkInstance(this);
         } catch (MQClientException e) {
-            log.error("failed to create rocket consumer: {}", e.getErrorMessage());
+            //log.error("failed to create rocket consumer: {}", e.getErrorMessage());
             throw new RuntimeException("fail to create consumer for component: " + id);
         }
 
         /**when there was consumer already been started, the consumer will be null*/
         if (consumer == null){
-            log.warn("component {} already have consumer fetch data", id);
+            //log.warn("component {} already have consumer fetch data", id);
 
             new Thread(new Runnable() {
 
@@ -76,13 +77,13 @@ public class ConsumerSpout implements IRichSpout, MessageListenerConcurrently{
                         } catch (InterruptedException e) {
                             break;
                         }
-                        log.info("there was one consumer already started, thus the second will do nothing");
+                        //log.info("there was one consumer already started, thus the second will do nothing");
 
                     }
                 }
             }).start();
         }
-        log.info("Successfully init " + id);
+        //log.info("Successfully init " + id);
 
     }
 

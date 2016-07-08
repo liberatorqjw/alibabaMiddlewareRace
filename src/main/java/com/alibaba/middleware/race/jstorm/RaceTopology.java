@@ -3,6 +3,9 @@ package com.alibaba.middleware.race.jstorm;
 import backtype.storm.Config;
 import backtype.storm.StormSubmitter;
 import backtype.storm.topology.TopologyBuilder;
+import com.alibaba.middleware.race.platformbolt.PlatformPrice;
+import com.alibaba.middleware.race.rationbolt.RationBolt;
+import com.alibaba.middleware.race.spout.defaultConsumerSpout;
 import com.alibaba.middleware.race.utils.RaceConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,12 +33,18 @@ public class RaceTopology {
         int spout_Parallelism_hint = 1;
         int split_Parallelism_hint = 1;
         int count_Parallelism_hint = 2;
-        //conf.setNumWorkers(3);
+        conf.setNumWorkers(3);
         //conf.setNumAckers(1);
-        //conf.put(Config.TOPOLOGY_MAX_SPOUT_PENDING, 100000);
+        conf.put(Config.TOPOLOGY_MAX_SPOUT_PENDING, 100000);
 
         TopologyBuilder builder = new TopologyBuilder();
 
+        builder.setSpout("ConsumerSpout", new defaultConsumerSpout(), spout_Parallelism_hint);
+        //builder.setBolt("MapBolt", new MapBolt()).shuffleGrouping("ConsumerSpout");
+        //builder.setBolt("PriceCountBolt", new PriceCounterBolt()).shuffleGrouping("MapBolt");
+        //builder.setBolt("CountPriceBolt", new CountPriceBolt()).shuffleGrouping("ConsumerSpout");
+        builder.setBolt("DistributeBolt", new PlatformPrice()).shuffleGrouping("ConsumerSpout");
+        builder.setBolt("SearchOrderAddBolt", new RationBolt()).shuffleGrouping("DistributeBolt");
 
 
         String topologyName = RaceConfig.JstormTopologyName;

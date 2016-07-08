@@ -28,7 +28,7 @@ public class SavePriceResult extends TimerTask{
         {
             Map.Entry<Long, TimePrice> entry = Taobaoentries.next();
 
-            tairOperator.write(entry.getKey(), entry.getValue().getPrice());
+            tairOperator.write(RaceConfig.prex_taobao + entry.getKey(), entry.getValue().getPrice());
 
         }
 
@@ -39,7 +39,7 @@ public class SavePriceResult extends TimerTask{
         {
             Map.Entry<Long, TimePrice> entry = Tmallentries.next();
 
-            tairOperator.write(entry.getKey(), entry.getValue().getPrice());
+            tairOperator.write(RaceConfig.prex_tmall + entry.getKey(), entry.getValue().getPrice());
 
         }
 
