@@ -40,7 +40,7 @@ public class PlatformPrice implements IRichBolt {
 
     //private LinkedBlockingQueue<PayData> PayAllData;
 
-
+     private static final long serialVersionUID = 2495121976857546346L;
 
     @Override
     public void prepare(Map stormConf, TopologyContext context, OutputCollector collector) {

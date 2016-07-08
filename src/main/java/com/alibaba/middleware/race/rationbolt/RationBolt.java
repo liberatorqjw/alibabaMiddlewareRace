@@ -25,9 +25,11 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class RationBolt implements IRichBolt {
 
+	private static final long serialVersionUID=1L;
     private OutputCollector collector;
     private Lock lockration;
     //private ConcurrentHashMap<Long, RationPrice> RationPriceMap;
+
 
     @Override
     public void prepare(Map stormConf, TopologyContext context, OutputCollector collector) {

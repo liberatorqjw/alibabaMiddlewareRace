@@ -31,9 +31,9 @@ public class RaceTopology {
 
         Config conf = new Config();
         int spout_Parallelism_hint = 4;
-        int split_Parallelism_hint = 1;
+        int split_Parallelism_hint = 2;
         int count_Parallelism_hint = 2;
-        conf.setNumWorkers(3);
+        conf.setNumWorkers(4);
         //conf.setNumAckers(1);
         conf.put(Config.TOPOLOGY_MAX_SPOUT_PENDING, 100000);
 
@@ -43,8 +43,8 @@ public class RaceTopology {
         //builder.setBolt("MapBolt", new MapBolt()).shuffleGrouping("ConsumerSpout");
         //builder.setBolt("PriceCountBolt", new PriceCounterBolt()).shuffleGrouping("MapBolt");
         //builder.setBolt("CountPriceBolt", new CountPriceBolt()).shuffleGrouping("ConsumerSpout");
-        builder.setBolt("DistributeBolt", new PlatformPrice()).shuffleGrouping("ConsumerSpout");
-        builder.setBolt("SearchOrderAddBolt", new RationBolt()).shuffleGrouping("DistributeBolt");
+        builder.setBolt("DistributeBolt", new PlatformPrice(), split_Parallelism_hint).shuffleGrouping("ConsumerSpout");
+        builder.setBolt("SearchOrderAddBolt", new RationBolt(),count_Parallelism_hint).shuffleGrouping("DistributeBolt");
 
 
         String topologyName = RaceConfig.JstormTopologyName;

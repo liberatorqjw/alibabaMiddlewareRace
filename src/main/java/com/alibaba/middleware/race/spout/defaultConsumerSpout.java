@@ -38,7 +38,8 @@ public class defaultConsumerSpout implements IRichSpout, MessageListenerConcurre
     private String id;
     private SpoutOutputCollector collector;
     private transient DefaultMQPushConsumer consumer;
-
+    
+	private static final long serialVersionUID = 8476906628618859716L;
     private static Logger log = LoggerFactory.getLogger(defaultConsumerSpout.class);
 
 
