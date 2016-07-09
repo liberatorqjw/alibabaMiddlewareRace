@@ -72,7 +72,7 @@ public class PlatformPrice implements IRichBolt {
         //Saveservice.scheduleAtFixedRate(savePriceResult, 45, 45, TimeUnit.SECONDS);
 
         Timer timersave = new Timer();
-        timersave.schedule(new SavePriceResult(), 10 *1000, 60 *1000);
+        timersave.schedule(new SavePriceResult(), 10 *1000, 30 *1000);
 
 
     }
@@ -147,25 +147,26 @@ public class PlatformPrice implements IRichBolt {
                 }
             }
 
+            collector.ack(input);
         }
         else if (topic.equals(RaceConfig.MqTaobaoTradeTopic))
         {
-            lockorder.lock();
+
             OrderMessage orderMessage = (OrderMessage) message;
             OrderMap orderMap = new OrderMap(orderMessage.getTotalPrice(), RaceConfig.MqTaobaoTradeTopic);
             if (!PlatformData.OrderDataMap.containsKey(orderMessage.getOrderId()))
                 PlatformData.OrderDataMap.put(orderMessage.getOrderId(), orderMap);
+            collector.ack(input);
 
-            lockorder.unlock();
         }
         else if (topic.equals(RaceConfig.MqTmallTradeTopic))
         {
-            lockorder.lock();
+
             OrderMessage orderMessage = (OrderMessage) message;
             OrderMap orderMap = new OrderMap(orderMessage.getTotalPrice(), RaceConfig.MqTmallTradeTopic);
             if (!PlatformData.OrderDataMap.containsKey(orderMessage.getOrderId()))
                 PlatformData.OrderDataMap.put(orderMessage.getOrderId(), orderMap);
-            lockorder.unlock();
+            collector.ack(input);
         }
     }
 

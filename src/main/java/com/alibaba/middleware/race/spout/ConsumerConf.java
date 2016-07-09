@@ -39,6 +39,9 @@ public class ConsumerConf implements Serializable {
         consumer.subscribe(RaceConfig.MqTmallTradeTopic, tags);
         consumer.subscribe(RaceConfig.MqPayTopic, tags);
 
+        consumer.setConsumeMessageBatchMaxSize(64);
+        consumer.setPullBatchSize(128);
+        consumer.setConsumeThreadMin(15);
         consumer.registerMessageListener(listener);
 
         //consumer.setPullThresholdForQueue(config.getQueueSize());

@@ -39,7 +39,7 @@ public class RaceTopology {
 
         TopologyBuilder builder = new TopologyBuilder();
 
-        builder.setSpout("ConsumerSpout", new defaultConsumerSpout(), spout_Parallelism_hint);
+        builder.setSpout("ConsumerSpout", new defaultConsumerSpout(), spout_Parallelism_hint).setNumTasks(4);
         //builder.setBolt("MapBolt", new MapBolt()).shuffleGrouping("ConsumerSpout");
         //builder.setBolt("PriceCountBolt", new PriceCounterBolt()).shuffleGrouping("MapBolt");
         //builder.setBolt("CountPriceBolt", new CountPriceBolt()).shuffleGrouping("ConsumerSpout");
