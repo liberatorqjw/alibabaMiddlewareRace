@@ -16,19 +16,19 @@ public class OrderMap {
         this.platform = platform;
     }
 
-    public double getTotalprice() {
+    public synchronized double getTotalprice() {
         return totalprice;
     }
 
-    public void setTotalprice(double totalprice) {
+    public synchronized void setTotalprice(double totalprice) {
         this.totalprice = totalprice;
     }
 
-    public String getPlatform() {
+    public synchronized String getPlatform() {
         return platform;
     }
 
-    public void setPlatform(String platform) {
+    public synchronized void setPlatform(String platform) {
         this.platform = platform;
     }
 

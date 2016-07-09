@@ -31,7 +31,9 @@ public class SaveRationResult extends TimerTask {
     public void run() {
 
         //对map进行排序 取出最近的creatTime
-        SortMap sortMap = new SortMap(RationData.RationPriceMap);
+        //SortMap sortMap = new SortMap(RationData.RationPriceMap);
+        SortMap sortMap = new SortMap();
+
         //long curtime = sortMap.getTheFirstTime();
         //List<Long> createTimes = sortMap.getTheFirstTime();
 
@@ -58,7 +60,7 @@ public class SaveRationResult extends TimerTask {
 
             double tairprice =(Double) tairOperator.get(RaceConfig.prex_ratio + createTime);
 
-            if (Math.abs(curRatio - tairprice) < 0.05)
+            if (Math.abs(curRatio - tairprice) < 0.005)
                 continue;
             //double oldPrice =(Double) tairOperator.get(RaceConfig.prex_ratio + curtime);
             //if (new BigDecimal(curRatio).compareTo(new BigDecimal(oldPrice)) ==0)

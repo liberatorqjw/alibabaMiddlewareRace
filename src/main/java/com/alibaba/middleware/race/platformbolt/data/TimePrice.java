@@ -12,11 +12,11 @@ public class TimePrice {
         this.price = price;
     }
 
-    public double getPrice() {
+    public synchronized double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public synchronized void setPrice(double price) {
         this.price = price;
     }
 

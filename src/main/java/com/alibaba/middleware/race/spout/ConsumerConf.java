@@ -8,6 +8,7 @@ import com.alibaba.rocketmq.common.consumer.ConsumeFromWhere;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,7 +16,7 @@ import java.util.Map;
 /**
  * Created by qinjiawei on 16-6-28.
  */
-public class ConsumerConf {
+public class ConsumerConf implements Serializable {
 
     private static Logger log = LoggerFactory.getLogger(ConsumerConf.class);
     private static final long           serialVersionUID = 4641537253577312163L;

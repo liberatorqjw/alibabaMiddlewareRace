@@ -1,9 +1,11 @@
 package com.alibaba.middleware.race.rationbolt.data;
 
+import java.io.Serializable;
+
 /**
  * Created by qinjiawei on 16-7-8.
  */
-public class RationPrice {
+public class RationPrice implements Serializable{
 
     private double pcPrice;
 
@@ -14,7 +16,7 @@ public class RationPrice {
         this.wirlessPrice = wirlessPrice;
     }
 
-    public double getPcPrice() {
+    public synchronized double getPcPrice() {
         return pcPrice;
     }
 
@@ -22,7 +24,7 @@ public class RationPrice {
         this.pcPrice = pcPrice;
     }
 
-    public double getWirlessPrice() {
+    public  synchronized double getWirlessPrice() {
         return wirlessPrice;
     }
 

@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public class RaceConfig implements Serializable {
 
+    private static final long           serialVersionUID = 1L;
+
     public static String TeamCode = "42270b8eby";
     //这些是写tair key的前缀
     public static String prex_tmall =   "platformTmall_"  + TeamCode + "_";

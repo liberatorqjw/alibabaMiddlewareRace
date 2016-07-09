@@ -46,7 +46,7 @@ public class RationBolt implements IRichBolt {
         // 第二个参数为首次执行的延时时间，第三个参数为定时执行的间隔时间
         //service.scheduleAtFixedRate(savePlatformPrice, 45, 60, TimeUnit.SECONDS);
         Timer timer = new Timer();
-        timer.schedule(new SaveRationResult(), 45*1000, 60 *1000);
+        timer.schedule(new SaveRationResult(), 10*1000, 60 *1000);
 
 
     }
@@ -59,7 +59,6 @@ public class RationBolt implements IRichBolt {
 
         short pc =0;
         short wireless =1;
-
 
         //格式化时间
         long createTime = (message.getCreateTime() /1000 /60 ) * 60;

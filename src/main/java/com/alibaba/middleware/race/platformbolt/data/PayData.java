@@ -18,27 +18,27 @@ public class PayData {
     public PayData() {
     }
 
-    public long getCreateTime() {
+    public synchronized long getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(long createTime) {
+    public synchronized void setCreateTime(long createTime) {
         this.createTime = createTime;
     }
 
-    public double getCurprice() {
+    public synchronized double getCurprice() {
         return curprice;
     }
 
-    public void setCurprice(double curprice) {
+    public synchronized void setCurprice(double curprice) {
         this.curprice = curprice;
     }
 
-    public long getOrderid() {
+    public synchronized long getOrderid() {
         return orderid;
     }
 
-    public void setOrderid(long orderid) {
+    public synchronized void setOrderid(long orderid) {
         this.orderid = orderid;
     }
 }

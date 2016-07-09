@@ -35,6 +35,7 @@ public class PlatformPrice implements IRichBolt {
     private OutputCollector collector;
     private Lock lockcount;
     private Lock lockTmall;
+    private Lock lockorder;
 
     //private ConcurrentHashMap<Long, OrderMap> OrderDataMap;
 
@@ -48,6 +49,8 @@ public class PlatformPrice implements IRichBolt {
         this.collector        = collector;
         this.lockcount = new ReentrantLock();
         this.lockTmall = new ReentrantLock();
+        this.lockorder = new ReentrantLock();
+
 
         //this.OrderDataMap     = new ConcurrentHashMap<Long, OrderMap>();
         //this.PayAllData       = new LinkedBlockingQueue<PayData>();
@@ -60,7 +63,7 @@ public class PlatformPrice implements IRichBolt {
         // 第二个参数为首次执行的延时时间，第三个参数为定时执行的间隔时间
         //service.scheduleAtFixedRate(payFindOrder, 10, 1, TimeUnit.SECONDS);
         Timer timerfind = new Timer();
-        timerfind.schedule(new PayFindOrder(), 10 *1000, 1*1000);
+        timerfind.schedule(new PayFindOrder(), 5 *1000, 1*1000);
 
         //开启一个监控线程来查看消息是不是全部到达
         //ScheduledExecutorService Saveservice = Executors.newSingleThreadScheduledExecutor();
@@ -69,7 +72,7 @@ public class PlatformPrice implements IRichBolt {
         //Saveservice.scheduleAtFixedRate(savePriceResult, 45, 45, TimeUnit.SECONDS);
 
         Timer timersave = new Timer();
-        timersave.schedule(new SavePriceResult(), 45 *1000, 45 *1000);
+        timersave.schedule(new SavePriceResult(), 10 *1000, 60 *1000);
 
 
     }
@@ -147,20 +150,22 @@ public class PlatformPrice implements IRichBolt {
         }
         else if (topic.equals(RaceConfig.MqTaobaoTradeTopic))
         {
+            lockorder.lock();
             OrderMessage orderMessage = (OrderMessage) message;
             OrderMap orderMap = new OrderMap(orderMessage.getTotalPrice(), RaceConfig.MqTaobaoTradeTopic);
             if (!PlatformData.OrderDataMap.containsKey(orderMessage.getOrderId()))
                 PlatformData.OrderDataMap.put(orderMessage.getOrderId(), orderMap);
 
-
+            lockorder.unlock();
         }
         else if (topic.equals(RaceConfig.MqTmallTradeTopic))
         {
+            lockorder.lock();
             OrderMessage orderMessage = (OrderMessage) message;
             OrderMap orderMap = new OrderMap(orderMessage.getTotalPrice(), RaceConfig.MqTmallTradeTopic);
             if (!PlatformData.OrderDataMap.containsKey(orderMessage.getOrderId()))
                 PlatformData.OrderDataMap.put(orderMessage.getOrderId(), orderMap);
-
+            lockorder.unlock();
         }
     }
 

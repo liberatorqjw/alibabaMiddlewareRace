@@ -43,8 +43,8 @@ public class RaceTopology {
         //builder.setBolt("MapBolt", new MapBolt()).shuffleGrouping("ConsumerSpout");
         //builder.setBolt("PriceCountBolt", new PriceCounterBolt()).shuffleGrouping("MapBolt");
         //builder.setBolt("CountPriceBolt", new CountPriceBolt()).shuffleGrouping("ConsumerSpout");
-        builder.setBolt("DistributeBolt", new PlatformPrice(), split_Parallelism_hint).shuffleGrouping("ConsumerSpout");
-        builder.setBolt("SearchOrderAddBolt", new RationBolt(),count_Parallelism_hint).shuffleGrouping("DistributeBolt");
+        builder.setBolt("PlatformPrice", new PlatformPrice(), split_Parallelism_hint).shuffleGrouping("ConsumerSpout");
+        builder.setBolt("SearchOrderAddBolt", new RationBolt(),count_Parallelism_hint).shuffleGrouping("PlatformPrice");
 
 
         String topologyName = RaceConfig.JstormTopologyName;

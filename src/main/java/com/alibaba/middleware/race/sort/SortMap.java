@@ -1,5 +1,6 @@
 package com.alibaba.middleware.race.sort;
 
+import com.alibaba.middleware.race.rationbolt.data.RationData;
 import com.alibaba.middleware.race.rationbolt.data.RationPrice;
 
 import java.util.ArrayList;
@@ -21,13 +22,16 @@ public class SortMap {
         RationPriceMap = rationPriceMap;
     }
 
+    public SortMap() {
+    }
+
     /**
      * 按照map的key进行排序,并且取出在首位的key
      */
     public List<Long> getTheFirstTime()
     {
 
-        Set<Long> timesSet = RationPriceMap.keySet();
+        Set<Long> timesSet = RationData.RationPriceMap.keySet();
         List<Long> times = new ArrayList<Long>(timesSet);
 
         if (times.size() < 1)
