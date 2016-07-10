@@ -191,6 +191,7 @@ public class defaultConsumerSpout implements IRichSpout, MessageListenerConcurre
             {
                 //存队列
                 PaymentMessage paymentMessage = RaceUtils.readKryoObject(PaymentMessage.class, bodyByte);
+                //log.info("send pay message");
                 // 在flowControl模式下 使用阻塞队列来发送Pay的信息
                 if (flowControl) {
                     try {
@@ -205,6 +206,7 @@ public class defaultConsumerSpout implements IRichSpout, MessageListenerConcurre
             }
             else
             {
+                //log.info("send order message");
                 OrderMessage orderMessage = RaceUtils.readKryoObject(OrderMessage.class, bodyByte);
                 collector.emit(new Values(topic, orderMessage));
             }
@@ -216,6 +218,7 @@ public class defaultConsumerSpout implements IRichSpout, MessageListenerConcurre
         @Override
     public void ack(Object msgId, List<Object> values) {
 
+            /*
             if (flowControl) {
                 int ackNum = acknums.incrementAndGet();
                 int failNum = failnums.get();
@@ -225,6 +228,7 @@ public class defaultConsumerSpout implements IRichSpout, MessageListenerConcurre
                     failnums.set(0);
                 }
             }
+            */
 
         }
 

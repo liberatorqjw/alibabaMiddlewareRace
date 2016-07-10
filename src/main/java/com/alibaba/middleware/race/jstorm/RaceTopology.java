@@ -1,6 +1,7 @@
 package com.alibaba.middleware.race.jstorm;
 
 import backtype.storm.Config;
+import backtype.storm.LocalCluster;
 import backtype.storm.StormSubmitter;
 import backtype.storm.topology.TopologyBuilder;
 import com.alibaba.middleware.race.platformbolt.PlatformPrice;
@@ -30,12 +31,12 @@ public class RaceTopology {
     public static void main(String[] args) throws Exception {
 
         Config conf = new Config();
-        int spout_Parallelism_hint = 4;
-        int split_Parallelism_hint = 2;
-        int count_Parallelism_hint = 2;
-        conf.setNumWorkers(4);
-        //conf.setNumAckers(1);
-        conf.put(Config.TOPOLOGY_MAX_SPOUT_PENDING, 100000);
+        int spout_Parallelism_hint = 2;
+        int split_Parallelism_hint = 1;
+        int count_Parallelism_hint = 3;
+        conf.setNumWorkers(3);
+        conf.setNumAckers(1);
+        //conf.put(Config.TOPOLOGY_MAX_SPOUT_PENDING, 100000);
 
         TopologyBuilder builder = new TopologyBuilder();
 

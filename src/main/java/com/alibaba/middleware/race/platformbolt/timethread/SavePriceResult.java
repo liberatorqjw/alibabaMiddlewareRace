@@ -32,6 +32,7 @@ public class SavePriceResult extends TimerTask{
                 continue;
             tairOperator.write(RaceConfig.prex_taobao + entry.getKey(), entry.getValue().getPrice());
 
+
         }
 
         //遍历Tmall

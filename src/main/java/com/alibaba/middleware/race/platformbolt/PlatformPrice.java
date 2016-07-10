@@ -20,6 +20,7 @@ import com.alibaba.middleware.race.utils.RaceConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.locks.Lock;
@@ -44,6 +45,7 @@ public class PlatformPrice implements IRichBolt {
 
     protected HashMap<Long, Double> lastTaobaoresult;
     protected HashMap<Long, Double> lastTmallresult;
+    protected LinkedBlockingDeque<PayData> NotFindPay;
 
 
 
@@ -68,6 +70,7 @@ public class PlatformPrice implements IRichBolt {
         this.Tmallresult = new ConcurrentHashMap<Long, TimePrice>();
         this.lastTaobaoresult = new HashMap<Long, Double>();
         this.lastTmallresult = new HashMap<Long, Double>();
+        this.NotFindPay = new LinkedBlockingDeque<PayData>();
 
 
 
@@ -209,7 +212,7 @@ public class PlatformPrice implements IRichBolt {
             //pay 没有找到order 就存在轮询队列里面
             else {
 
-                    PlatformData.PayAllData.offer(payData);
+                   NotFindPay.offer(payData);
             }
 
 
@@ -221,8 +224,11 @@ public class PlatformPrice implements IRichBolt {
 
             OrderMessage orderMessage = (OrderMessage) message;
             OrderMap orderMap = new OrderMap(orderMessage.getTotalPrice(), RaceConfig.MqTaobaoTradeTopic);
-            if (!TaobaoDataMap.containsKey(orderMessage.getOrderId()))
+            if (!TaobaoDataMap.containsKey(orderMessage.getOrderId())) {
                 TaobaoDataMap.put(orderMessage.getOrderId(), orderMap);
+                log.info("****save taobaodatamap {}", String.valueOf(orderMessage.getOrderId()) +" " +String.valueOf( orderMap.getTotalprice()));
+
+            }
             collector.ack(input);
 
         }
@@ -231,8 +237,11 @@ public class PlatformPrice implements IRichBolt {
 
             OrderMessage orderMessage = (OrderMessage) message;
             OrderMap orderMap = new OrderMap(orderMessage.getTotalPrice(), RaceConfig.MqTmallTradeTopic);
-            if (!TmallDataMap.containsKey(orderMessage.getOrderId()))
+            if (!TmallDataMap.containsKey(orderMessage.getOrderId())) {
                 TmallDataMap.put(orderMessage.getOrderId(), orderMap);
+                log.info("****save tmalldatamap {}", String.valueOf(orderMessage.getOrderId()) +" " +String.valueOf(orderMap.getTotalprice()));
+
+            }
             collector.ack(input);
         }
     }
@@ -258,7 +267,7 @@ public class PlatformPrice implements IRichBolt {
      */
     public void findPayOrder()
     {
-        Iterator<PayData> iters = PlatformData.PayAllData.iterator();
+        Iterator<PayData> iters = NotFindPay.iterator();
 
         while (iters.hasNext()) {
 
@@ -272,7 +281,9 @@ public class PlatformPrice implements IRichBolt {
             //存在订单
             if (TaobaoDataMap.containsKey(orderid))
             {
-                PlatformData.PayAllData.remove(payData);
+                log.info("find the TaobaoData in the queue {}", String.valueOf(payData.getOrderid())+String.valueOf(payData.getCurprice()));
+
+               NotFindPay.remove(payData);
 
                 TaobaoDataMap.get(orderid).descPrice(price);
                 if (TaobaoDataMap.get(orderid).isZero())
@@ -313,7 +324,8 @@ public class PlatformPrice implements IRichBolt {
             //Tmall
             else if(TmallDataMap.containsKey(orderid))
             {
-                PlatformData.PayAllData.remove(payData);
+                log.info("find the Tmalldata in the queue {}", String.valueOf(payData.getOrderid())+" " +String.valueOf(payData.getCurprice()));
+                NotFindPay.remove(payData);
 
                 //处理结果, 把时间把临时结果的map取出
                 TmallDataMap.get(orderid).descPrice(price);
@@ -349,7 +361,6 @@ public class PlatformPrice implements IRichBolt {
                     Tmallresult.get(createTime).incrPrice(price);
                 }
 
-
             }
 
         }
@@ -371,13 +382,21 @@ public class PlatformPrice implements IRichBolt {
         {
             Map.Entry<Long, TimePrice> entry = Taobaoentries.next();
             //double tairprice =(Double) tairOperator.get(RaceConfig.prex_taobao + entry.getKey());
-            if (lastTaobaoresult.containsKey(entry.getKey()) && (lastTaobaoresult.get(entry.getKey()) - entry.getValue().getPrice()) < 0.005)
+
+            BigDecimal bg = new BigDecimal(entry.getValue().getPrice());
+
+            double curRatio = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue(); //保留两位小数
+
+            if (lastTaobaoresult.containsKey(entry.getKey()) && (lastTaobaoresult.get(entry.getKey()) - curRatio) < 0.005)
                 continue;
 //            if (Math.abs(entry.getValue().getPrice() - tairprice) < 0.005)
 //                continue;
+
             else {
-                tairOperator.write(RaceConfig.prex_taobao + entry.getKey(), entry.getValue().getPrice());
-                lastTaobaoresult.put(entry.getKey(), entry.getValue().getPrice());
+                tairOperator.write(RaceConfig.prex_taobao + entry.getKey(), curRatio);
+                lastTaobaoresult.put(entry.getKey(), curRatio);
+                log.info("####save the result into the tair {}", String.valueOf(RaceConfig.prex_taobao + entry.getKey()) + ":" + String.valueOf(curRatio));
+
             }
 
         }
@@ -391,12 +410,17 @@ public class PlatformPrice implements IRichBolt {
 //            double tairprice =(Double) tairOperator.get(RaceConfig.prex_tmall + entry.getKey());
 //            if (Math.abs(entry.getValue().getPrice() - tairprice) < 0.005)
 //                continue;
-            if (lastTmallresult.containsKey(entry.getKey()) && (lastTmallresult.get(entry.getKey()) - entry.getValue().getPrice()) < 0.005)
+            BigDecimal bg = new BigDecimal(entry.getValue().getPrice());
+
+            double curRatio = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue(); //保留两位小数
+
+            if (lastTmallresult.containsKey(entry.getKey()) && (lastTmallresult.get(entry.getKey()) - curRatio) < 0.005)
                     continue;
             else {
 
-                tairOperator.write(RaceConfig.prex_tmall + entry.getKey(), entry.getValue().getPrice());
-                 lastTmallresult.put(entry.getKey(), entry.getValue().getPrice());
+                tairOperator.write(RaceConfig.prex_tmall + entry.getKey(), curRatio);
+                 lastTmallresult.put(entry.getKey(), curRatio);
+                log.info("####save the result into the tair {}", String.valueOf(RaceConfig.prex_tmall +entry.getKey()) +":" +String.valueOf(curRatio));
             }
         }
 

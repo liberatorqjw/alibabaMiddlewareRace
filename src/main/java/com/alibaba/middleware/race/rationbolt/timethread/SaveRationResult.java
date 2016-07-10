@@ -62,11 +62,7 @@ public class SaveRationResult extends TimerTask {
 
             if (Math.abs(curRatio - tairprice) < 0.005)
                 continue;
-            //double oldPrice =(Double) tairOperator.get(RaceConfig.prex_ratio + curtime);
-            //if (new BigDecimal(curRatio).compareTo(new BigDecimal(oldPrice)) ==0)
-            //    continue;
-            //if ( Math.abs(curRatio - oldPrice) < 0.005)
-            //    continue;
+
             tairOperator.write(RaceConfig.prex_ratio + createTime, curRatio);
 
 
