@@ -62,8 +62,8 @@ public class PlatformPrice implements IRichBolt {
         //PayFindOrder payFindOrder = new PayFindOrder(OrderDataMap, PayAllData);
         // 第二个参数为首次执行的延时时间，第三个参数为定时执行的间隔时间
         //service.scheduleAtFixedRate(payFindOrder, 10, 1, TimeUnit.SECONDS);
-        Timer timerfind = new Timer();
-        timerfind.schedule(new PayFindOrder(), 5 *1000, 1*1000);
+        //Timer timerfind = new Timer();
+        //timerfind.schedule(new PayFindOrder(), 5 *1000, 1*1000);
 
         //开启一个监控线程来查看消息是不是全部到达
         //ScheduledExecutorService Saveservice = Executors.newSingleThreadScheduledExecutor();
@@ -71,8 +71,8 @@ public class PlatformPrice implements IRichBolt {
         // 第二个参数为首次执行的延时时间，第三个参数为定时执行的间隔时间
         //Saveservice.scheduleAtFixedRate(savePriceResult, 45, 45, TimeUnit.SECONDS);
 
-        Timer timersave = new Timer();
-        timersave.schedule(new SavePriceResult(), 10 *1000, 30 *1000);
+        //Timer timersave = new Timer();
+        //timersave.schedule(new SavePriceResult(), 10 *1000, 30 *1000);
 
 
     }
@@ -145,6 +145,9 @@ public class PlatformPrice implements IRichBolt {
                         lockTmall.unlock();
                     }
                 }
+
+                if (PlatformData.OrderDataMap.get(payData.getOrderid()).getTotalprice() < 0.005)
+                    PlatformData.OrderDataMap.remove(payData.getOrderid());
             }
 
             collector.ack(input);
