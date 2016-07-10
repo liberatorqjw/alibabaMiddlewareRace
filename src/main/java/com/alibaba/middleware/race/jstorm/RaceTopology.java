@@ -36,7 +36,7 @@ public class RaceTopology {
         int count_Parallelism_hint = 3;
         conf.setNumWorkers(3);
         conf.setNumAckers(1);
-        //conf.put(Config.TOPOLOGY_MAX_SPOUT_PENDING, 100000);
+        conf.put(Config.TOPOLOGY_MAX_SPOUT_PENDING, 100000);
 
         TopologyBuilder builder = new TopologyBuilder();
 
