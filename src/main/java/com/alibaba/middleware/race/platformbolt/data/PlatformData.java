@@ -15,4 +15,6 @@ public class PlatformData {
 
     public static LinkedBlockingQueue<PayData> PayAllData = new LinkedBlockingQueue<PayData>();
 
+
+
 }

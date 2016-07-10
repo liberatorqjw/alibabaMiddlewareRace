@@ -36,4 +36,9 @@ public class OrderMap {
     {
         this.totalprice -=price;
     }
+
+    public synchronized boolean isZero()
+    {
+        return Math.abs(this.totalprice) < 0.005;
+    }
 }
