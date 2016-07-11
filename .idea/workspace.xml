@@ -24,12 +24,41 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="PlatformPrice.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="PlatformPrice.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/alibaba/middleware/race/platformbolt/PlatformPrice.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.065714285">
-              <caret line="404" column="57" selection-start-line="404" selection-start-column="45" selection-end-line="404" selection-end-column="57" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="172" column="37" selection-start-line="172" selection-start-column="37" selection-end-line="172" selection-end-column="37" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="defaultConsumerSpout.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/alibaba/middleware/race/spout/defaultConsumerSpout.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.39567232">
+              <caret line="249" column="9" selection-start-line="249" selection-start-column="9" selection-end-line="249" selection-end-column="9" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MetaTuple.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/alibaba/middleware/race/spout/MetaTuple.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="88" column="26" selection-start-line="88" selection-start-column="26" selection-end-line="88" selection-end-column="26" />
+              <folding>
+                <element signature="e#1086#1087#0" expanded="true" />
+                <element signature="e#1125#1126#0" expanded="true" />
+                <element signature="e#1156#1157#0" expanded="true" />
+                <element signature="e#1185#1186#0" expanded="true" />
+                <element signature="e#1888#1889#0" expanded="true" />
+                <element signature="e#1928#1929#0" expanded="true" />
+                <element signature="e#1975#1976#0" expanded="true" />
+                <element signature="e#2008#2009#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -80,17 +109,17 @@
         <option value="$PROJECT_DIR$/src/main/java/com/alibaba/middleware/race/sort/SortMap.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/alibaba/middleware/race/rationbolt/data/RationPrice.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/alibaba/middleware/race/rationbolt/RationBolt.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/alibaba/middleware/race/spout/MetaTuple.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/alibaba/middleware/race/platformbolt/data/OrderMap.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/alibaba/middleware/race/platformbolt/data/PlatformData.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/alibaba/middleware/race/platformbolt/timethread/SavePriceResult.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/alibaba/middleware/race/spout/defaultConsumerSpout.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/alibaba/middleware/race/rationbolt/timethread/SaveRationResult.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/alibaba/middleware/race/spout/ConsumerConf.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/alibaba/middleware/race/platformbolt/PlatformPrice.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/alibaba/middleware/race/jstorm/RaceTopology.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/alibaba/middleware/race/utils/RaceConfig.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/alibaba/middleware/race/spout/MetaTuple.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/alibaba/middleware/race/platformbolt/PlatformPrice.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/alibaba/middleware/race/spout/defaultConsumerSpout.java" />
       </list>
     </option>
   </component>
@@ -728,12 +757,12 @@
       <workItem from="1467900259271" duration="17318000" />
       <workItem from="1467965737268" duration="5416000" />
       <workItem from="1467986220502" duration="24572000" />
-      <workItem from="1468149039614" duration="5172000" />
+      <workItem from="1468149039614" duration="7457000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="52478000" />
+    <option name="totallyTimeSpent" value="54763000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="-4" width="1535" height="904" extended-state="6" />
@@ -756,7 +785,7 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="6.514658E-4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25537458" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.09090909" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15691158" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -866,8 +895,8 @@
           <folding>
             <element signature="e#401#402#0" expanded="false" />
             <element signature="e#434#435#0" expanded="false" />
-            <element signature="e#783#784#0" expanded="true" />
-            <element signature="e#822#823#0" expanded="true" />
+            <element signature="e#783#784#0" expanded="false" />
+            <element signature="e#822#823#0" expanded="false" />
             <element signature="e#870#871#0" expanded="false" />
             <element signature="e#926#927#0" expanded="false" />
           </folding>
@@ -1041,6 +1070,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="25" column="24" selection-start-line="25" selection-start-column="24" selection-end-line="25" selection-end-column="24" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1048,6 +1078,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="16" column="47" selection-start-line="16" selection-start-column="47" selection-end-line="16" selection-end-column="47" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1114,13 +1145,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/alibaba/middleware/race/spout/MetaTuple.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="40" column="46" selection-start-line="40" selection-start-column="46" selection-end-line="40" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/alibaba/middleware/race/model/PaymentMessage.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1172,7 +1196,7 @@
         <state vertical-scroll-proportion="0.42714286">
           <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
           <folding>
-            <element signature="e#643#652#0" expanded="true" />
+            <element signature="e#643#652#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1182,8 +1206,8 @@
         <state vertical-scroll-proportion="0.5257143">
           <caret line="22" column="28" selection-start-line="22" selection-start-column="28" selection-end-line="22" selection-end-column="28" />
           <folding>
-            <element signature="e#459#460#0" expanded="true" />
-            <element signature="e#497#498#0" expanded="true" />
+            <element signature="e#459#460#0" expanded="false" />
+            <element signature="e#497#498#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1193,8 +1217,8 @@
         <state vertical-scroll-proportion="1.0185714">
           <caret line="41" column="8" selection-start-line="41" selection-start-column="8" selection-end-line="41" selection-end-column="8" />
           <folding>
-            <element signature="e#783#784#0" expanded="true" />
-            <element signature="e#822#823#0" expanded="true" />
+            <element signature="e#783#784#0" expanded="false" />
+            <element signature="e#822#823#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1239,14 +1263,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/alibaba/middleware/race/spout/defaultConsumerSpout.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.9614286">
-          <caret line="50" column="34" selection-start-line="50" selection-start-column="34" selection-end-line="50" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/alibaba/middleware/race/utils/RaceConfig.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1255,10 +1271,35 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/alibaba/middleware/race/spout/MetaTuple.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="88" column="26" selection-start-line="88" selection-start-column="26" selection-end-line="88" selection-end-column="26" />
+          <folding>
+            <element signature="e#1086#1087#0" expanded="true" />
+            <element signature="e#1125#1126#0" expanded="true" />
+            <element signature="e#1156#1157#0" expanded="true" />
+            <element signature="e#1185#1186#0" expanded="true" />
+            <element signature="e#1888#1889#0" expanded="true" />
+            <element signature="e#1928#1929#0" expanded="true" />
+            <element signature="e#1975#1976#0" expanded="true" />
+            <element signature="e#2008#2009#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/alibaba/middleware/race/platformbolt/PlatformPrice.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.065714285">
-          <caret line="404" column="57" selection-start-line="404" selection-start-column="45" selection-end-line="404" selection-end-column="57" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="172" column="37" selection-start-line="172" selection-start-column="37" selection-end-line="172" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/alibaba/middleware/race/spout/defaultConsumerSpout.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.39567232">
+          <caret line="249" column="9" selection-start-line="249" selection-start-column="9" selection-end-line="249" selection-end-column="9" />
           <folding />
         </state>
       </provider>

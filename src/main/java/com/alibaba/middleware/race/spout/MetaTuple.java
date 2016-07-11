@@ -30,11 +30,13 @@ public class MetaTuple implements Serializable {
     protected transient CountDownLatch latch;
     protected transient boolean isSuccess;
     protected PaymentMessage paymentMessage;
+    protected int failnums;
 
 
-    public MetaTuple(PaymentMessage paymentMessage)
+    public MetaTuple(PaymentMessage paymentMessage, int failnums)
     {
         this.paymentMessage = paymentMessage;
+        this.failnums = failnums;
 
     }
 
@@ -74,6 +76,18 @@ public class MetaTuple implements Serializable {
         this.paymentMessage = paymentMessage;
     }
 
+    public int getFailnums() {
+        return failnums;
+    }
+
+    public void setFailnums(int failnums) {
+        this.failnums = failnums;
+    }
+
+    public synchronized void incrfail()
+    {
+        this.failnums +=1;
+    }
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this,

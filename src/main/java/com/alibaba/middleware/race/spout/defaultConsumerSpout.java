@@ -172,7 +172,7 @@ public class defaultConsumerSpout implements IRichSpout, MessageListenerConcurre
 
     public void sendTuple(MetaTuple metaTuple) {
         //metaTuple.updateEmitMs();
-        collector.emit(new Values(RaceConfig.MqPayTopic, metaTuple.getPaymentMessage()));
+        collector.emit(new Values(RaceConfig.MqPayTopic, metaTuple), metaTuple);
     }
 
     public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> msgs, ConsumeConcurrentlyContext context) {
@@ -195,12 +195,12 @@ public class defaultConsumerSpout implements IRichSpout, MessageListenerConcurre
                 // 在flowControl模式下 使用阻塞队列来发送Pay的信息
                 if (flowControl) {
                     try {
-                        sendingQueue.put(new MetaTuple(paymentMessage));
+                        sendingQueue.put(new MetaTuple(paymentMessage, 0));
                     } catch (InterruptedException e) {
                         //logger.info(RaceConfig.LogTracker + "ZY spout put PAY operation interupt:" + e.getMessage(), e);
                     }
                 } else {
-                    sendTuple(new MetaTuple(paymentMessage));
+                    sendTuple(new MetaTuple(paymentMessage,0));
                 }
 
             }
@@ -208,7 +208,7 @@ public class defaultConsumerSpout implements IRichSpout, MessageListenerConcurre
             {
                 //log.info("send order message");
                 OrderMessage orderMessage = RaceUtils.readKryoObject(OrderMessage.class, bodyByte);
-                collector.emit(new Values(topic, orderMessage));
+                collector.emit(new Values(topic, orderMessage), orderMessage);
             }
         }
         return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
@@ -218,7 +218,7 @@ public class defaultConsumerSpout implements IRichSpout, MessageListenerConcurre
         @Override
     public void ack(Object msgId, List<Object> values) {
 
-            /*
+
             if (flowControl) {
                 int ackNum = acknums.incrementAndGet();
                 int failNum = failnums.get();
@@ -228,12 +228,33 @@ public class defaultConsumerSpout implements IRichSpout, MessageListenerConcurre
                     failnums.set(0);
                 }
             }
-            */
+
 
         }
 
     @Override
     public void fail(Object msgId, List<Object> values) {
+
+        if (!flowControl){
+            int nums = failnums.incrementAndGet();
+            int ack = acknums.get();
+            if (nums >=100000 && nums !=0 && (ack/nums) <=5)
+            {
+                flowControl = true;
+                acknums.set(0);
+                failnums.set(0);
+            }
+        }
+
+        if (msgId instanceof MetaTuple)
+        {
+            MetaTuple message = (MetaTuple) values.get(1);
+            message.incrfail();
+            if (message.getFailnums() <= 5)
+            {
+                sendingQueue.offer(message);
+            }
+        }
 
     }
 }

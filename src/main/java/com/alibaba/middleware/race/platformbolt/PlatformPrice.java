@@ -15,6 +15,7 @@ import com.alibaba.middleware.race.platformbolt.data.PlatformData;
 import com.alibaba.middleware.race.platformbolt.data.TimePrice;
 import com.alibaba.middleware.race.platformbolt.timethread.PayFindOrder;
 import com.alibaba.middleware.race.platformbolt.timethread.SavePriceResult;
+import com.alibaba.middleware.race.spout.MetaTuple;
 import com.alibaba.middleware.race.tair.TairOperatorImpl;
 import com.alibaba.middleware.race.utils.RaceConfig;
 import org.slf4j.Logger;
@@ -118,7 +119,9 @@ public class PlatformPrice implements IRichBolt {
 
         if (topic.equals(RaceConfig.MqPayTopic))
         {
-            PaymentMessage paymentMessage = (PaymentMessage) message;
+            MetaTuple metaTuple = (MetaTuple) message;
+
+            PaymentMessage paymentMessage = metaTuple.getPaymentMessage();
             //订单id
             long orderid = paymentMessage.getOrderId();
             //订单的金额
@@ -167,7 +170,7 @@ public class PlatformPrice implements IRichBolt {
                 {
                     Taobaoresult.get(createTime).incrPrice(price);
                 }
-
+                collector.ack(input);
 
             }
             //Tmall
@@ -206,18 +209,17 @@ public class PlatformPrice implements IRichBolt {
                 else {
                     Tmallresult.get(createTime).incrPrice(price);
                 }
-
+                collector.ack(input);
 
             }
             //pay 没有找到order 就存在轮询队列里面
             else {
 
-                   NotFindPay.offer(payData);
+                   //重发
+                   collector.fail(input);
             }
 
 
-
-            collector.ack(input);
         }
         else if (topic.equals(RaceConfig.MqTaobaoTradeTopic))
         {
